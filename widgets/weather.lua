@@ -5,7 +5,7 @@
 
 -- {{{ Grab environment
 local tonumber = tonumber
-local io = { popen = io.popen }
+local io = { open = io.open }
 local setmetatable = setmetatable
 local math = { ceil = math.ceil }
 local string = { match = string.match }
@@ -38,10 +38,7 @@ local _weather = {
 local function worker(format, warg)
     if not warg then return end
 
-    -- Get weather forceast by the station ICAO code, from:
-    -- * US National Oceanic and Atmospheric Administration
-    local url = "http://weather.noaa.gov/pub/data/observations/metar/decoded/"..warg
-    local f = io.popen("curl --connect-timeout 1 -fsm 3 "..helpers.shellquote(url)..".TXT")
+    local f = io.open("tmp/"..warg)
     local ws = f:read("*all")
     f:close()
 
