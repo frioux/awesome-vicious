@@ -10,6 +10,8 @@ local setmetatable = setmetatable
 local math = { ceil = math.ceil }
 local string = { match = string.match }
 local helpers = require("vicious.helpers")
+local lfs = require("lfs")
+
 -- }}}
 
 
@@ -39,6 +41,7 @@ local function worker(format, warg)
     if not warg then return end
 
     local f = io.open("tmp/"..warg)
+    local attributes = lfs.attributes("tmp/"..warg)
     local ws = f:read("*all")
     f:close()
 
@@ -63,6 +66,7 @@ local function worker(format, warg)
        string.match(ws, "Relative[%s]Humidity:[%s]([%d]+)%%") or _weather["{humid}"]
     _weather["{press}"]   = -- Pressure in hPa
        string.match(ws, "Pressure[%s].+%((.+)[%s]hPa%)") or _weather["{press}"]
+    _weather["{time}"]   = os.date("%c", attributes.modification)
 
     -- Wind speed in km/h if MPH was available
     if _weather["{windmph}"] ~= "N/A" then
