@@ -33,7 +33,8 @@ local _weather = {
     ["{dewf}"]    = "N/A",
     ["{dewc}"]    = "N/A",
     ["{humid}"]   = "N/A",
-    ["{press}"]   = "N/A"
+    ["{press}"]   = "N/A",
+    ["{time}"]   = "N/A"
 }
 
 -- {{{ Weather widget type
@@ -41,6 +42,7 @@ local function worker(format, warg)
     if not warg then return end
 
     local f = io.open("tmp/"..warg)
+    if f == nil then return _weather end
     local attributes = lfs.attributes("tmp/"..warg)
     local ws = f:read("*all")
     f:close()
